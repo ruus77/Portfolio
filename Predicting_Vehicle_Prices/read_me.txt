@@ -1,0 +1,1 @@
+The primary goal of this project is to build and evaluate linear regression models for predicting used vehicle prices.
