@@ -25,7 +25,7 @@ class ModelSelector:
                 self.data.loc[test_mask, target] + SHIFT_VALUE)
 
     @staticmethod
-    def metrics_info(self, y_pred: np.ndarray, y_test: np.ndarray):
+    def metrics_info(y_pred: np.ndarray, y_test: np.ndarray):
         mpd = mean_poisson_deviance(y_true=y_test,
                                     y_pred=y_pred)
         d2 = d2_tweedie_score(y_true=y_test,
