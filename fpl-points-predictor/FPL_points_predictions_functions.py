@@ -91,10 +91,7 @@ class ModelSelector:
 
             except (ValueError, TypeError):
                 random_search.fit(X_train, y_train)
-
-
-
-
+            best_models_map[model_name] = random_search.best_estimator_
             metrics = self.metrics_raport(y_true=y_train,
                                         y_pred=random_search.best_estimator_.predict(X_train))
             row = {
@@ -105,9 +102,7 @@ class ModelSelector:
                 "d2": metrics[1],
                 "mae": metrics[2]}
             results_list.append(row)
-
-        return pd.DataFrame(results_list), best_models_map
-
+        return pd.DataFrame(results_list)
     def models_validation(self, trained_models_map, X_test, y_test):
         """
         :param trained_models_map:
