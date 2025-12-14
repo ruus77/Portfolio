@@ -13,7 +13,7 @@ class ModelSelector:
         :param target:
         train contains  seasons: ['2021', '2122', '2223', '2322']
         test contains  seasons: ['2425', '2526']
-        :return: X_train, X_test, y_train, y_test
+        :return: X_train, X_test, y_train, y_test, SHIFT_VALUE
         """
         X = self.data.drop(columns=["date", "element", "opponent_team", "season", target],
                            errors='ignore').select_dtypes(exclude="object").copy()
@@ -29,7 +29,8 @@ class ModelSelector:
         return (X[train_mask],
                 X[test_mask],
                 self.data.loc[train_mask, target] + SHIFT_VALUE,
-                self.data.loc[test_mask, target] + SHIFT_VALUE)
+                self.data.loc[test_mask, target] + SHIFT_VALUE,
+                SHIFT_VALUE)
 
     @staticmethod
     def metrics_raport(y_pred: np.ndarray, y_true: np.ndarray):
