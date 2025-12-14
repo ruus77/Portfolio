@@ -88,15 +88,11 @@ class ModelSelector:
                                                refit=True)
             try:
                 random_search.fit(X_train, y_train, sample_weight=sample_weights)
+
             except (ValueError, TypeError):
                 random_search.fit(X_train, y_train)
 
-            best_models_map[model_name] = random_search.best_estimator_
-            results_list.append({
-                "model": model_name,
-                "best_params": random_search.best_params_,
-                "fit_time": random_search.refit_time_})
-            best_models_map[model_name] = random_search.best_estimator_
+
 
 
             metrics = self.metrics_raport(y_true=y_train,
@@ -107,8 +103,7 @@ class ModelSelector:
                 "best_params": random_search.best_params_,
                 "mpd": metrics[0],
                 "d2": metrics[1],
-                "mae": metrics[2]
-            }
+                "mae": metrics[2]}
             results_list.append(row)
 
         return pd.DataFrame(results_list), best_models_map
