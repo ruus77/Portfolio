@@ -8,6 +8,7 @@ class ModelSelector:
         self.data = data
 
     def train_test(self, target="total_points"):
+        global SHIFT_VALUE
         X = self.data.drop(columns=["date", "element", "opponent_team", "season", target],
                            errors='ignore').select_dtypes(exclude="object")
 
