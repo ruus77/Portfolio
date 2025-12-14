@@ -102,7 +102,7 @@ class ModelSelector:
                 "d2": metrics[1],
                 "mae": metrics[2]}
             results_list.append(row)
-        return pd.DataFrame(results_list)
+        return pd.DataFrame(results_list), best_models_map
     def models_validation(self, trained_models_map, X_test, y_test):
         """
         :param trained_models_map:
