@@ -25,8 +25,7 @@ class ModelSelector:
         train_min = self.data.loc[train_mask, target].min()
         test_min = self.data.loc[test_mask, target].min()
 
-        SHIFT_VALUE =  max(np.abs(train_min), np.abs(test_min)) if max(np.abs(train_min), np.abs(test_min)) < 0 else 0
-
+        SHIFT_VALUE =  max(np.abs(train_min), np.abs(test_min))
         return (X[train_mask],
                 X[test_mask],
                 self.data.loc[train_mask, target] + SHIFT_VALUE,
