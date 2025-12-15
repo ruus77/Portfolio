@@ -1,5 +1,5 @@
 from sklearn.model_selection import RandomizedSearchCV, TimeSeriesSplit
-from sklearn.metrics import mean_poisson_deviance, d2_tweedie_score, mean_absolute_error
+from sklearn.metrics import mean_poisson_deviance,  mean_absolute_error, log_loss
 import pandas as pd
 import numpy as np
 
@@ -31,9 +31,22 @@ class ModelSelector:
                 self.data.loc[train_mask, target] + SHIFT_VALUE,
                 self.data.loc[test_mask, target] + SHIFT_VALUE,
                 SHIFT_VALUE)
-
     @staticmethod
-    def metrics_raport(y_pred: np.ndarray, y_true: np.ndarray):
+    def mcfadden_r2(y_pred:np.ndarray, y_true:np.ndarray):
+        """
+        :param y_pred:
+        :param y_true:
+        :return: mcfadden_r2
+        """
+        model_log_loss = log_loss(y_true=y_true, y_pred=y_pred, normalize=False)
+        default_model = np.mean(y_true)
+        default_model_prob = np.full(y_true.shape, default_model)
+        default_model_log_loss = log_loss(y_true=y_true, y_pred=default_model_prob, normalize=False)
+
+        return  1 - (model_log_loss - default_model_log_loss)
+
+
+    def metrics_raport(self, y_pred: np.ndarray, y_true: np.ndarray):
         """
         :param y_pred:
         :param y_true:
@@ -41,12 +54,12 @@ class ModelSelector:
         """
         mpd = mean_poisson_deviance(y_true=y_true,
                                     y_pred=y_pred)
-        d2 = d2_tweedie_score(y_true=y_true,
-                              y_pred=y_pred,
-                              power=1)
+        r2 = self.mcfadden_r2(y_true=y_true,
+                              y_pred=y_pred)
+
         mae = mean_absolute_error(y_true=y_true,
                                   y_pred=y_pred)
-        return mpd, d2, mae
+        return mpd, r2, mae
 
     def params_search(self,
                     models: list,
